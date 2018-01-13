@@ -6,10 +6,11 @@ var Finder = require('fs-finder');
 var DOMParser = require('xmldom').DOMParser;
 var XMLSerializer=require('xmldom').XMLSerializer; 
 var xpath=require('xpath');
+var rootDir = __dirname;
 
 
 console.log(`Current directory: ${__dirname}`); 
-var files = Finder.from(__dirname).find("config.xml");
+var files = Finder.from(rootDir).find("config.xml");
 //console.log(`Files: ${files}`); 
 
 files.forEach((file)=> {
@@ -33,7 +34,7 @@ function addElement(file) {
                  return console.log(err);
              } 
              console.log(`The file ${file} is saved.`);
-             
+
          });
 
       }
