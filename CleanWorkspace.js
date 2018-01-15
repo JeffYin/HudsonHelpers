@@ -6,38 +6,42 @@ var Finder = require('fs-finder');
 var DOMParser = require('xmldom').DOMParser;
 var XMLSerializer=require('xmldom').XMLSerializer; 
 var xpath=require('xpath');
-var rootDir = __dirname;
-
+// var rootDir = "C:\\.hudson\\jobs\\WebService-v.5.40.10.01";
+ var rootDir = "C:\\.hudson\\jobs";
 
 console.log(`Current directory: ${__dirname}`); 
 var files = Finder.from(rootDir).find("config.xml");
 //console.log(`Files: ${files}`); 
 
 files.forEach((file)=> {
-    console.log(file);
     addElement(file);
 });
 
 function addElement(file) {
-    fs.readFileSync(file); 
    fs.readFile(file, function(err, data) {
+      console.log(file);
       var doc = new DOMParser().parseFromString(data.toString());
       var container =xpath.select("/project/project-properties",doc)[0]; 
-      var node = xpath.select("//entry[string = 'hudson-plugins-ws_cleanup-WsCleanup']", container);
-      if (node.length==0) {
-         var newNode = createCleanWorkspaceNode(); 
-         container.appendChild(newNode);
+        if (container) {
+          var node = xpath.select("//entry[string = 'hudson-plugins-ws_cleanup-WsCleanup']", container);
+          if (node.length==0) {
+          var newNode = createCleanWorkspaceNode(); 
+          container.appendChild(newNode);
 
-         var finalXml = new XMLSerializer().serializeToString(doc); 
-         fs.writeFile(file, finalXml, (err)=>{
-             if (err) {
-                 return console.log(err);
-             } 
-             console.log(`The file ${file} is saved.`);
+          var finalXml = new XMLSerializer().serializeToString(doc); 
+          fs.writeFile(file, finalXml, (err)=>{
+              if (err) {
+                  return console.log(err);
+              } 
+              console.log(`The file ${file} is saved.`);
 
-         });
-
-      }
+          });
+        }  else {
+          console.log(`The file ${file} already has been changed. No change this time. `);
+        }
+      } else {
+        console.log(`The file ${file} is NOT hudson config XML. `);
+      } 
 
     //   doc.documentElement.getAttribute();
 
