@@ -2,12 +2,13 @@
   Enable Clean Workspace in each build
 */
 var fs = require('fs');
-var Finder = require('fs-finder');
+var Finder = require('fs-finder'); 
 var DOMParser = require('xmldom').DOMParser;
 var XMLSerializer=require('xmldom').XMLSerializer; 
 var xpath=require('xpath');
 // var rootDir = "C:\\.hudson\\jobs\\WebService-v.5.40.10.01";
- var rootDir = "C:\\.hudson\\jobs";
+//  var rootDir = "C:\\.hudson\\jobs";
+ var rootDir = __dirname; 
 
 console.log(`Current directory: ${__dirname}`); 
 var files = Finder.from(rootDir).find("config.xml");
@@ -24,7 +25,11 @@ function addElement(file) {
       var container =xpath.select("/project/project-properties",doc)[0]; 
         if (container) {
           var node = xpath.select("//entry[string = 'hudson-plugins-ws_cleanup-WsCleanup']", container);
-          if (node.length==0) {
+          if (node.length!=0) {
+            container.removeChild(node[0]); 
+          }
+
+
           var newNode = createCleanWorkspaceNode(); 
           container.appendChild(newNode);
 
@@ -36,9 +41,7 @@ function addElement(file) {
               console.log(`The file ${file} is saved.`);
 
           });
-        }  else {
-          console.log(`The file ${file} already has been changed. No change this time. `);
-        }
+          
       } else {
         console.log(`The file ${file} is NOT hudson config XML. `);
       } 
@@ -50,19 +53,25 @@ function addElement(file) {
    function createCleanWorkspaceNode() {
     var node = new DOMParser().parseFromString(
         `
-        <entry>
-        <string>hudson-plugins-ws_cleanup-WsCleanup</string>
-        <external-property>
-          <originalValue class="hudson.plugins.ws_cleanup.WsCleanup">
-            <deleteDirs>false</deleteDirs>
-            <skipWhenFailed>false</skipWhenFailed>
-            <notFailBuild>false</notFailBuild>
-            <cleanupMatrixParent>false</cleanupMatrixParent>
-          </originalValue>
-          <propertyOverridden>false</propertyOverridden>
-          <modified>true</modified>
-        </external-property>
-      </entry>
+       <entry>
+      <string>hudson-plugins-ws_cleanup-WsCleanup</string>
+      <external-property>
+        <originalValue class="hudson.plugins.ws_cleanup.WsCleanup">
+          <patterns>
+            <hudson.plugins.ws__cleanup.Pattern>
+              <pattern>**/target/**</pattern>
+              <type>INCLUDE</type>
+            </hudson.plugins.ws__cleanup.Pattern>
+          </patterns>
+          <deleteDirs>true</deleteDirs>
+          <skipWhenFailed>true</skipWhenFailed>
+          <notFailBuild>true</notFailBuild>
+          <cleanupMatrixParent>false</cleanupMatrixParent>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry>
         `
     ); 
     return node; 

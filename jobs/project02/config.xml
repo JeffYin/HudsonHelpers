@@ -291,19 +291,26 @@ deploy
     </entry>
     -->
   
-        <entry>
-        <string>hudson-plugins-ws_cleanup-WsCleanup</string>
-        <external-property>
-          <originalValue class="hudson.plugins.ws_cleanup.WsCleanup">
-            <deleteDirs>false</deleteDirs>
-            <skipWhenFailed>false</skipWhenFailed>
-            <notFailBuild>false</notFailBuild>
-            <cleanupMatrixParent>false</cleanupMatrixParent>
-          </originalValue>
-          <propertyOverridden>false</propertyOverridden>
-          <modified>true</modified>
-        </external-property>
-      </entry></project-properties>
+        
+       <entry>
+      <string>hudson-plugins-ws_cleanup-WsCleanup</string>
+      <external-property>
+        <originalValue class="hudson.plugins.ws_cleanup.WsCleanup">
+          <patterns>
+            <hudson.plugins.ws__cleanup.Pattern>
+              <pattern>**/target/**</pattern>
+              <type>INCLUDE</type>
+            </hudson.plugins.ws__cleanup.Pattern>
+          </patterns>
+          <deleteDirs>true</deleteDirs>
+          <skipWhenFailed>true</skipWhenFailed>
+          <notFailBuild>true</notFailBuild>
+          <cleanupMatrixParent>false</cleanupMatrixParent>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry></project-properties>
   <keepDependencies>false</keepDependencies>
   <creationTime>1515090642741</creationTime>
   <properties/>
