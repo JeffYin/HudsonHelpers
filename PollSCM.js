@@ -1,5 +1,5 @@
 /*
-  Enable Clean Workspace in each build
+  Added Automatic SCM Polling functions.
 */
 var fs = require('fs');
 var Finder = require('fs-finder'); 

@@ -1,5 +1,5 @@
 /*
-  Enable Clean Workspace in each build
+  Uncheck the "Clean workspace before build" checkbox in the "Advanced Jobs Options"
 */
 var fs = require('fs');
 var Finder = require('fs-finder'); 
