@@ -7,8 +7,8 @@ var DOMParser = require('xmldom').DOMParser;
 var XMLSerializer=require('xmldom').XMLSerializer; 
 var xpath=require('xpath');
 // var rootDir = "C:\\.hudson\\jobs\\WebService-v.5.40.10.01";
-//  var rootDir = "C:\\.hudson\\jobs";
- var rootDir = __dirname; 
+ var rootDir = "C:\\.hudson\\jobs";
+//  var rootDir = __dirname; 
 
 console.log(`Current directory: ${__dirname}`); 
 var files = Finder.from(rootDir).find("config.xml");

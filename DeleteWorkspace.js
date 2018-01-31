@@ -4,11 +4,11 @@
 var fs = require('fs');
 var Finder = require('fs-finder');
 
-var rootDir = __dirname;
+var rootDir = "C:\\.hudson\\jobs";
 
 
 console.log(`Current directory: ${__dirname}`); 
-var workspaceFolders = Finder.in(rootDir).findDirectories("WORKSPACE");
+var workspaceFolders = Finder.from(rootDir).findDirectories("workspace");
 //console.log(`Files: ${files}`); 
 
 workspaceFolders.forEach((folder)=> {
